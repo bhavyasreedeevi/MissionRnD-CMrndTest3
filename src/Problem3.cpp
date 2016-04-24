@@ -57,6 +57,41 @@ struct enode{
 	struct enode *left;
 	struct enode *right;
 };
+struct Stack
+{
+	int top;
+	unsigned capacity;
+	int* array;
+};
+struct Stack* createStack(unsigned capacity)
+{
+	struct Stack* stack = (struct Stack*) malloc(sizeof(struct Stack));
+
+	if (!stack) return NULL;
+
+	stack->top = -1;
+	stack->capacity = capacity;
+	stack->array = (int*)malloc(stack->capacity * sizeof(int));
+
+	if (!stack->array) return NULL;
+
+	return stack;
+}
+int isEmpty(struct Stack* stack)
+{
+	return stack->top == -1;
+}
+int pop(struct Stack* stack)
+{
+	if (!isEmpty(stack))
+			return stack->array[stack->top--];
+	return '$';
+}
+
+void push(struct Stack* stack, char op)
+{
+	stack->array[++stack->top] = op;
+}
 
 /*
 Helper Functions are optional to write 
@@ -67,7 +102,9 @@ int isOperator(char *data){
 		return 0;
 	else
 	{
-		if (data[0] == '*' || data[0] == '+' || data[0] = '-')
+		int n = *data - '0';
+
+		if (n == '*' || n == '+' || n == '-')
 		{
 			return 1;
 		}
@@ -91,10 +128,28 @@ int getOperand(char *data){
 	if (data == NULL)
 		return 0;
 	else
-		return(*data-'0');
+		return(atoi(data));
 }
+
 //Helper Functions end
+void inorder(struct enode *root){
+	if (root == NULL)
+		return;
+	inorder(root->left);
+	{
+		if (isOperand(root->data))
+			push(stack, exp[i] - '0');
+	}
+	inorder(root->right);
+}
+struct Stack* stack = createStack(strlen(exp));
+
 int solve_tree(struct enode *root){
-    return -1;
+	if (root==NULL)
+		return -1;
+	else
+	{
+		inorder(root);
+	}
 }
 
