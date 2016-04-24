@@ -70,7 +70,58 @@ struct node{
 	struct node *left;
 	struct node *right;
 };
-
+int bstcount(struct node *p)
+{
+	if (p == NULL)
+		return(0);
+	else
+		if (p->left == NULL && p->right == NULL)
+			return(1);
+		else
+			return(1 + (bstcount(p->left) + bstcount(p->right)));
+}
+int dllcount(struct node_dll *head)
+{
+	if (head == NULL)
+		return(0);
+	return(1 + dllcount(head->next));
+}
+void inorder(struct node *root, struct node_dll *head,int *flag){
+	if (root == NULL)
+		return;
+	inorder(root->left, head,flag);
+	if (*flag == -1)
+		return;
+	else if (root->data == head->data)
+	{
+		head = head->next;
+	}
+	else
+	{
+		*flag = -1;
+		return;
+	}
+	inorder(root->right, head,flag);
+}
 int is_identical(struct node_dll *head, struct node *root){
-	return -1;
+	if (head==NULL||root==NULL)
+		return -1;
+	else
+	{
+		int bstnodes = bstcount(root);
+		int dllnodes = dllcount(head);
+		if (bstnodes == dllnodes)
+		{
+			int flag = 0;
+			inorder(root, head, &flag);
+			if (flag == -1)
+				return(0);
+			else if (flag == 0)
+				return(1);
+		}
+		else
+		{
+			return(0);
+		}
+	}
 }

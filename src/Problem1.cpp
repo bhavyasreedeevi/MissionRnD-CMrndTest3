@@ -49,8 +49,39 @@ struct node{
 	struct node *left;
 	struct node *right;
 };
-
-
+void inorder1(struct node *root, int *count){
+	if (root == NULL)
+		return;
+	inorder1(root->left, count);
+	if (root->data >= 0)
+		*count = *count - root->data;
+	inorder1(root->right, count);
+}
+void inorder2(struct node *root, int *count){
+	if (root == NULL)
+		return;
+	inorder2(root->left, count);
+	if (root->data <= 0)
+		*count = *count + root->data;
+	inorder2(root->right, count);
+}
 int get_missing_value(struct node *root,int n){
-    return -1;
+	if (root==NULL||n==0)
+		 return -1;
+	else
+	{
+		int count;
+		if (n > 0)
+		{
+			count = (n*(n + 1)) / 2;
+			inorder1(root, &count);
+			return(count);
+		}
+		if (n < 0)
+		{
+			count = ((-n)*((-n)+1))/2;
+			inorder2(root,&count);
+			return(count);
+		}
+	}
 }
